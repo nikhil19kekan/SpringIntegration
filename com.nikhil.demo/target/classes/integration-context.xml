@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.2.xsd">
+
+	<!-- Gateway that sends a message on channel(also called an Endpoint) -->	
+	<int:gateway service-interface="com.nikhil.demo.SenderGateway" default-request-channel="nikschannel">
+	<int:method name="print"/>
+	</int:gateway>
+	
+	<!-- channel that carries message-->
+	<int:channel id="nikschannel"/>
+	
+	<!-- service adaptor that receives message and does processing on it(Also called an Endpoint) -->
+	<int:service-activator input-channel="nikschannel" ref="receiver-service" method="print"/>
+	<!-- This bean below is just declaration of receiver-service used above -->
+	<bean id="receiver-service" class="com.nikhil.demo.ReceiverActivator"/>
+</beans>
